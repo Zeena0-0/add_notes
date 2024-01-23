@@ -6,6 +6,7 @@ import 'package:task_manager/view/components/CustomAppBar.dart';
 import '../../core/models/task.dart';
 import '../../core/providers/TaskProvider.dart';
 import '../components/AnimatedTextField.dart';
+import '../components/AppElevatedButton.dart';
 import '../components/DateTextField.dart';
 import '../components/CustomTimeRangeField.dart';
 
@@ -34,8 +35,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
     // Initialize text controllers with task data
     _titleController = TextEditingController(text: widget.task.title);
     _descriptionController = TextEditingController(text: widget.task.description);
-    _startDateController = TextEditingController(text: widget.task.startTime.toString());
-    _endDateController = TextEditingController(text: widget.task.endTime.toString());
+    _startDateController = TextEditingController(text: DateFormat('hh:mm a').format(widget.task.startTime));
+    _endDateController = TextEditingController(text: DateFormat('hh:mm a').format(widget.task.endTime));
     _dateController = TextEditingController(text: widget.task.dueDate);
 
     // Add listeners to text controllers
@@ -71,15 +72,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
       _dateController.text = pickedDate.toLocal().toString().split(' ')[0];
     }
   }
-  DateTime parseDateTime(String dateString) {
-    // Use the intl package for parsing date
-    final parsedDate = DateFormat('yyyy-MM-dd HH:mm a').parse(dateString);
-
-    return parsedDate;
+  DateTime parseDateTime(String timeString, String dateString) {
+    try {
+      // Use the intl package for parsing time
+      final parsedTime = DateFormat('yyyy-MM-dd hh:mm a').parse('$dateString $timeString');
+      return parsedTime;
+    } catch (e) {
+      print('Error parsing date time: $dateString $timeString');
+      print('Exception: $e');
+      throw e; // Rethrow the exception after printing details
+    }
   }
+
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
 
     return Scaffold(
       appBar: const CustomAppBar(
@@ -124,32 +133,42 @@ class _EditTaskPageState extends State<EditTaskPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
+                  AppElevatedButton(
                     onPressed: isSaveButtonEnabled
                         ? () {
+                      DateTime startTime = parseDateTime(_startDateController.text, _dateController.text);
+                      DateTime endTime = parseDateTime(_endDateController.text, _dateController.text);
+
+                      if (startTime.isAfter(endTime)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('الوقت غير صالح , تاريخ النهاية يجب ان يكون بعد تاريخ البداية'),
+                          ),
+                        );
+                        return;
+                      }
                       // Update the task using the provider
                       Task updatedTask = Task(
                         id: widget.task.id,
                         title: _titleController.text,
                         dueDate: _dateController.text,
-                        startTime: parseDateTime(_startDateController.text),
-                        endTime: parseDateTime(_endDateController.text),
+                        startTime:startTime,
+                        endTime: endTime,
                         description: _descriptionController.text,
                       );
-
-                      Provider.of<TaskProvider>(context, listen: false).updateTask(updatedTask);
-
+                      taskProvider.editTask(updatedTask);
                       // Close the edit page
                       Navigator.pop(context);
                     }
-                        : null,
-                    child: const Text('حفظ'),
+                        :  () {},
+                    label: 'حفظ',
+
                   ),
-                  ElevatedButton(
+                  AppElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('الغاء'),
+                    label:'الغاء',
                   ),
                 ],
               ),

@@ -1,40 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class TaskActionsPanel extends StatelessWidget {
-  final Function() onEditPressed;
-  final Function() onDeletePressed;
-  final Function() onCompletePressed;
+class CustomSlidePanel extends StatelessWidget {
+  final Widget body;
+  final Widget panel;
+  final double minHeight;
+  final double maxHeight;
 
-  const TaskActionsPanel({
-    Key? key,
-    required this.onEditPressed,
-    required this.onDeletePressed,
-    required this.onCompletePressed,
-  }) : super(key: key);
+  const CustomSlidePanel({super.key,
+    required this.body,
+    required this.panel,
+    this.minHeight = 100.0,
+    this.maxHeight = 250.0,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton(
-            onPressed: onEditPressed,
-            child: const Text('تعديل'),
+    return SlidingUpPanel(
+      minHeight: minHeight,
+      maxHeight: maxHeight,
+      body: body,
+      panelBuilder: (ScrollController sc) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24.0),
+              topRight: Radius.circular(24.0),
+            ),
           ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onDeletePressed,
-            child: const Text('حذف'),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onCompletePressed,
-            child: const Text('اكمال المهمة'),
-          ),
-        ],
+          child: panel
+        );
+      },
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(24.0),
+        topRight: Radius.circular(24.0),
       ),
+
+      renderPanelSheet: false,
     );
   }
 }

@@ -47,7 +47,7 @@ class GoogleNavBar extends StatelessWidget {
           ),
           GButton(
             icon: Icons.person_2_rounded,
-            text: 'Profile',
+            text: 'Activity',
           ),
         ],
       ),

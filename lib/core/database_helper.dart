@@ -17,7 +17,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'task_manager.db');
     _database = await openDatabase(
       path,
-      version: 3, // Incremented the version
+      version: 6, // Incremented the version
       onCreate: _createTables,
       onUpgrade: _onUpgrade, // Added onUpgrade callback
     );
@@ -35,30 +35,73 @@ class DatabaseHelper {
     ''');
 
     await db.execute('''
-    CREATE TABLE tasks (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT,
-      description TEXT,
-      due_date TEXT,
-      start_time TIMESTAMP,   -- Added start_time column
-      end_time TIMESTAMP,     -- Added end_time column
+  CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    description TEXT,
+    due_date TEXT,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    is_completed INTEGER
+  )
+''');
+
+
+    await db.execute('''
+   CREATE TABLE completed_tasks (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     title TEXT,
+     description TEXT,
+     due_date TEXT,
+     start_time TIMESTAMP,
+     end_time TIMESTAMP,
       is_completed INTEGER
-    )
-  ''');
+   )
+''');
+
   }
+
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     print("onUpgrade: oldVersion=$oldVersion, newVersion=$newVersion");
 
     if (oldVersion < 2) {
       // Perform database schema changes for version 2
-      await db.execute('ALTER TABLE tasks ADD COLUMN start_time TEXT');
-      await db.execute('ALTER TABLE tasks ADD COLUMN end_time TEXT');
+      await db.execute('ALTER TABLE completed_tasks ADD COLUMN is_completed INTEGER');
     }
 
     // Add more upgrade logic as needed for each version increment
   }
+  Future<void> insertCompletedTask(Task task) async {
+    final db = await database;
+    await db.insert(
+      'completed_tasks',
+      task.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 
+  Future<List<Task>> getCompletedTasks() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'completed_tasks',
+      // Specify the columns you need
+      columns: ['id', 'title', 'description', 'due_date', 'start_time', 'end_time'],
+    );
+
+    // Convert the List<Map> into a List<Task>
+    return List.generate(maps.length, (i) {
+      return Task(
+        id: maps[i]['id'],
+        title: maps[i]['title'],
+        description: maps[i]['description'],
+        dueDate: maps[i]['due_date'],
+        startTime: DateTime.parse(maps[i]['start_time']),
+        endTime: DateTime.parse(maps[i]['end_time']),
+        isCompleted: true, // Since these are completed tasks
+      );
+    });
+  }
   Future<int> insertUser(User user) async {
     final db = await database; // Ensure the database is initialized
     return await db.insert('users', user.toMap());
@@ -116,7 +159,14 @@ class DatabaseHelper {
       whereArgs: [task.id],
     );
   }
-
+  Future<void> deleteCompleteTask(int taskId) async {
+    final db = await database;
+    await db.delete(
+      'completed_tasks',
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
+  }
   Future<void> deleteTask(int taskId) async {
     final db = await database;
     await db.delete(

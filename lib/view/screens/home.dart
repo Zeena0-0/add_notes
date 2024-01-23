@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: const CustomAppBar(
         title: 'المهام',
@@ -48,6 +49,10 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   index: index,
+                  onMarkAsCompleted: () {
+                    taskProvider.markTaskAsCompleted(task.id??0);
+
+                  },
                 ),
               );
             },

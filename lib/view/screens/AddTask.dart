@@ -6,6 +6,7 @@ import 'package:task_manager/view/components/CustomAppBar.dart';
 import '../../core/models/task.dart';
 import '../../core/providers/TaskProvider.dart';
 import '../components/AnimatedTextField.dart';
+import '../components/AppElevatedButton.dart';
 import '../components/DateTextField.dart';
 import '../components/CustomTimeRangeField.dart';
 
@@ -117,18 +118,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
+                  AppElevatedButton(
                     onPressed: isSaveButtonEnabled
                         ? () {
-                      // Validate the time range
                       DateTime startTime = parseDateTime(_startDateController.text, _dateController.text);
                       DateTime endTime = parseDateTime(_endDateController.text, _dateController.text);
 
                       if (startTime.isAfter(endTime)) {
-                        // Show an error message for invalid time range
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Invalid time range. Start time should be before end time.'),
+                          const SnackBar(
+                            content: Text('الوقت غير صالح , تاريخ النهاية يجب ان يكون بعد تاريخ البداية'),
                           ),
                         );
                         return;
@@ -153,17 +152,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       _descriptionController.clear();
                       _dateController.clear();
                     }
-                        : null,
+                        : (){},
 
-                    child: const Text('حفظ'),
+                    label: 'حفظ',
                   ),
 
-                  ElevatedButton(
+                  AppElevatedButton(
                     onPressed: () {
                       // Implement cancel functionality
                       Navigator.pop(context);
                     },
-                    child: const Text('إلغاء'),
+                    label: 'إلغاء',
                   ),
                 ],
               ),

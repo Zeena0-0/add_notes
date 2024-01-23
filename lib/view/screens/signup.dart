@@ -95,7 +95,7 @@ class SignUpPage extends StatelessWidget {
                         builder: (context) => const HomeScreen()));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                       SnackBar(
                         content: Text('اسم المستخدم موجود بالفعل' , style:AppTextStyles.headline1  ,),
                       ),
                     );

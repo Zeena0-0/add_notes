@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../theme/app_colors.dart';
-
 class CustomTaskCard extends StatelessWidget {
   final String taskName;
   final String date;
@@ -10,15 +9,22 @@ class CustomTaskCard extends StatelessWidget {
   final DateTime endTime;
   final VoidCallback onPressed;
   final int index; // Index to determine the card color
+  final VoidCallback? onMarkAsCompleted;
+  final VoidCallback? deleteIcone;
+  final double? height;
 
-  const CustomTaskCard({super.key,
+  const CustomTaskCard({
+    Key? key,
     required this.taskName,
     required this.date,
     required this.startTime,
     required this.endTime,
     required this.onPressed,
     required this.index,
-  });
+    this.onMarkAsCompleted,
+    this.deleteIcone,
+    this.height = 150,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +48,42 @@ class CustomTaskCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: SizedBox(
-          height: 150,
+          height: height,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  taskName,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      taskName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (onMarkAsCompleted != null)
+                      IconButton(
+                        icon: const Icon(
+                          Icons.check_circle,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: onMarkAsCompleted,
+                      ),
+                    if(deleteIcone != null)
+                      IconButton(onPressed: deleteIcone,
+                          icon: const Icon(
+                        Icons.delete_outline,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      )
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -66,7 +94,6 @@ class CustomTaskCard extends StatelessWidget {
                   ),
                 ),
                 Row(
-
                   children: [
                     Text(
                       'From $formattedStartTime',
