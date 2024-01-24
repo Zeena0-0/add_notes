@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/view/components/CustomAppBar.dart';
+import 'package:task_manager/view/components/NvigationBarContent.dart';
+import 'package:task_manager/view/screens/home.dart';
 import '../../core/models/task.dart';
 import '../../core/providers/TaskProvider.dart';
 import '../components/AnimatedTextField.dart';
@@ -29,8 +31,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   void initState() {
     super.initState();
-
-    // Add listeners to text controllers
     _titleController.addListener(updateSaveButtonState);
     _startDateController.addListener(updateSaveButtonState);
     _endDateController.addListener(updateSaveButtonState);
@@ -39,14 +39,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   void updateSaveButtonState() {
-    // Enable the "Save" button only when all text fields have values
     setState(() {
-      isSaveButtonEnabled =
-          _titleController.text.isNotEmpty &&
-              _startDateController.text.isNotEmpty &&
-              _endDateController.text.isNotEmpty &&
-              _descriptionController.text.isNotEmpty &&
-              _dateController.text.isNotEmpty;
+      isSaveButtonEnabled = _titleController.text.isNotEmpty &&
+          _startDateController.text.isNotEmpty &&
+          _endDateController.text.isNotEmpty &&
+          _descriptionController.text.isNotEmpty &&
+          _dateController.text.isNotEmpty;
     });
   }
 
@@ -65,7 +63,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   DateTime parseDateTime(String timeString, String dateString) {
     // Use the intl package for parsing time
-    final parsedTime = DateFormat('yyyy-MM-dd hh:mm a').parse('$dateString $timeString');
+    final parsedTime =
+        DateFormat('yyyy-MM-dd hh:mm a').parse('$dateString $timeString');
 
     return parsedTime;
   }
@@ -92,7 +91,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 decoration: const InputDecoration(labelText: 'Title'),
               ),
               const SizedBox(height: 16.0),
-
               CustomDateTextField(
                 controller: _dateController,
                 labelText: 'Date',
@@ -101,7 +99,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-
               CustomTimeRangeField(
                 startController: _startDateController,
                 endController: _endDateController,
@@ -121,46 +118,44 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   AppElevatedButton(
                     onPressed: isSaveButtonEnabled
                         ? () {
-                      DateTime startTime = parseDateTime(_startDateController.text, _dateController.text);
-                      DateTime endTime = parseDateTime(_endDateController.text, _dateController.text);
+                            DateTime startTime = parseDateTime(
+                                _startDateController.text,
+                                _dateController.text);
+                            DateTime endTime = parseDateTime(
+                                _endDateController.text, _dateController.text);
 
-                      if (startTime.isAfter(endTime)) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('الوقت غير صالح , تاريخ النهاية يجب ان يكون بعد تاريخ البداية'),
-                          ),
-                        );
-                        return;
-                      }
+                            if (startTime.isAfter(endTime)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'الوقت غير صالح , تاريخ النهاية يجب ان يكون بعد تاريخ البداية'),
+                                ),
+                              );
+                              return;
+                            }
+                            Task newTask = Task(
+                              title: _titleController.text,
+                              dueDate: _dateController.text,
+                              startTime: startTime,
+                              endTime: endTime,
+                              description: _descriptionController.text,
+                            );
 
-                      // Create a task object from the entered data
-                      Task newTask = Task(
-                        title: _titleController.text,
-                        dueDate: _dateController.text,
-                        startTime: startTime,
-                        endTime: endTime,
-                        description: _descriptionController.text,
-                      );
+                            taskProvider.addTask(newTask);
 
-                      // Add the task using the provider
-                      taskProvider.addTask(newTask);
-
-                      // Clear text fields
-                      _titleController.clear();
-                      _startDateController.clear();
-                      _endDateController.clear();
-                      _descriptionController.clear();
-                      _dateController.clear();
-                    }
-                        : (){},
-
+                            _titleController.clear();
+                            _startDateController.clear();
+                            _endDateController.clear();
+                            _descriptionController.clear();
+                            _dateController.clear();
+                          }
+                        : () {},
                     label: 'حفظ',
                   ),
-
                   AppElevatedButton(
                     onPressed: () {
-                      // Implement cancel functionality
-                      Navigator.pop(context);
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
                     },
                     label: 'إلغاء',
                   ),
