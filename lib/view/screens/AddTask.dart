@@ -148,6 +148,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             _endDateController.clear();
                             _descriptionController.clear();
                             _dateController.clear();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()));
                           }
                         : () {},
                     label: 'حفظ',
