@@ -50,8 +50,7 @@ class LoginPage extends StatelessWidget {
                       .logIn(username, password);
 
                   if (success) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
+                    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
                   } else {
                     // Handle login failure
                     ScaffoldMessenger.of(context).showSnackBar(

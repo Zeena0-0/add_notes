@@ -4,7 +4,6 @@ import '../../core/providers/authentication_provider.dart';
 import '../../theme/app_text_styles.dart';
 import '../components/AppElevatedButton.dart';
 import '../components/AppTextField.dart';
-import '../components/NvigationBarContent.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -13,6 +12,8 @@ class SignUpPage extends StatelessWidget {
       TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
+  SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,6 @@ class SignUpPage extends StatelessWidget {
               AppTextField(
                 controller: _usernameController,
                 labelText: 'اسم المستخدم',
-                // isUsernameAvailable: Provider.of<AuthenticationProvider>(
-                //   context,
-                //   listen: false,
-                // ).isUsernameAvailable(_usernameController.text),
               ),
               SizedBox(height: screenSize.height * 0.03),
               AppTextField(
@@ -84,14 +81,8 @@ class SignUpPage extends StatelessWidget {
                       context,
                       listen: false,
                     ).currentUser;
+                    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
 
-                    print('تم إنشاء حساب بنجاح!');
-                    print('اسم المستخدم: ${user?.username}');
-                    print('رقم الهاتف: ${user?.phoneNumber}');
-
-                    // Navigate to the home screen or replace with your desired route
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                        SnackBar(
