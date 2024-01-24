@@ -157,8 +157,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   AppElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
+                      _titleController.clear();
+                      _startDateController.clear();
+                      _endDateController.clear();
+                      _descriptionController.clear();
+                      _dateController.clear();
                     },
                     label: 'إلغاء',
                   ),
