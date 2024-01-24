@@ -40,7 +40,7 @@ class ProfilePage extends StatelessWidget {
                       // Handle logout here
                       AuthenticationProvider().logOut();
                       // Navigate to the login page or any other appropriate screen
-                      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+                      Navigator.of(context).pushNamedAndRemoveUntil('/login' , (route) => false);
                     },
                     child: const Text('تأكيد'),
                   ),
