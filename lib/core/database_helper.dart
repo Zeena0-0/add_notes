@@ -4,16 +4,16 @@ import 'models/task.dart';
 import 'models/user.dart';
 
 class DatabaseHelper {
-  static late Database _database;
+  static Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
 
     _database = await initDatabase();
-    return _database;
+    return _database!;
   }
 
-  Future<Database> initDatabase() async {
+  Future<Database?> initDatabase() async {
     String path = join(await getDatabasesPath(), 'task_manager.db');
     _database = await openDatabase(
       path,
@@ -23,7 +23,12 @@ class DatabaseHelper {
     );
     return _database;
   }
-
+  Future<void> closeDatabase() async {
+    if (_database != null && _database!.isOpen) {
+      await _database!.close();
+      _database = null;
+    }
+  }
   Future<void> _createTables(Database db, int version) async {
     await db.execute('''
       CREATE TABLE users (

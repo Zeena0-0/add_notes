@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/theme/app_colors.dart';
 import 'package:task_manager/theme/app_text_styles.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -12,7 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style:AppTextStyles.headline1,
+        style: AppTextStyles.bodyText,
       ),
       backgroundColor: Colors.white,
       centerTitle: true,

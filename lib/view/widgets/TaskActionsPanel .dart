@@ -10,7 +10,7 @@ class CustomSlidePanel extends StatelessWidget {
   const CustomSlidePanel({super.key,
     required this.body,
     required this.panel,
-    this.minHeight = 100.0,
+    this.minHeight = 60.0,
     this.maxHeight = 250.0,
   });
 
@@ -36,8 +36,10 @@ class CustomSlidePanel extends StatelessWidget {
         topLeft: Radius.circular(24.0),
         topRight: Radius.circular(24.0),
       ),
-
       renderPanelSheet: false,
     );
   }
+
 }
+
+

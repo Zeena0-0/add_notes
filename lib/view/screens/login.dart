@@ -5,7 +5,6 @@ import 'package:task_manager/view/screens/signup.dart';
 import '../../core/providers/authentication_provider.dart';
 import '../components/AppElevatedButton.dart';
 import '../components/AppTextField.dart';
-import 'home.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();

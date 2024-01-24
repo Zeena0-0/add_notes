@@ -7,10 +7,9 @@ import 'package:task_manager/core/models/task.dart';
 import 'package:task_manager/core/providers/TaskProvider.dart';
 import 'package:task_manager/theme/app_colors.dart';
 import 'package:task_manager/view/components/AppElevatedButton.dart';
-import 'package:wave_shape_package/wave_shape_package.dart';
 import '../../theme/app_text_styles.dart';
 import '../widgets/TaskActionsPanel .dart';
-import '../widgets/TaskCountdownTimer.dart';
+import '../widgets/CosWaveTopSide4.dart';
 import 'EditTask.dart';
 
 class TaskDetailsPage extends StatelessWidget {
@@ -97,85 +96,118 @@ class TaskDetailsPage extends StatelessWidget {
                         ),
                       ),
                     ),
+                     const SizedBox(height: 150 ,),
                   ],
                 ),
               ),
             ),
             panel: Padding(
-              padding: const EdgeInsets.only(top: 40),
+              padding: const EdgeInsets.only(top: 5),
               child: CustomPaint(
-                painter: CosWaveTopSide2(
-                  waveColor2: AppColors.purple,
+                painter: CosWaveTopSide4(
+                  waveColor4: AppColors.purple,
                 ),
-                child:  SizedBox(
-                  width: double.infinity,
-                  height: 250,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit , color: Colors.white,size: 30,),
-                          onPressed: (){
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => EditTaskPage(task: task,)));
-                          },
-                        ),
+                child:  Stack(
+                  children: [
+                   SizedBox(
+                    width: double.infinity,
+                    height: 250,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit , color: Colors.white,size: 30,),
+                            onPressed: (){
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => EditTaskPage(task: task,)));
+                            },
+                          ),
 
-                        AppElevatedButton(
-                          onPressed: () {
-                            taskProvider.markTaskAsCompleted(task.id!);
-                            taskProvider.deleteTask(task.id!);
-                            Navigator.pop(context); // Close the details page
-                          },
-                          label: 'تم الاكمال', // You can customize the label
-                          color: Colors.white,
-                          textcolor: AppColors.purple,
-                        ),
+                          AppElevatedButton(
+                            onPressed: () {
+                              taskProvider.markTaskAsCompleted(task.id!);
+                              taskProvider.deleteTask(task.id!);
+                              Navigator.pop(context); // Close the details page
+                            },
+                            label: 'تم الاكمال', // You can customize the label
+                            color: Colors.white,
+                            textcolor: AppColors.purple,
+                          ),
 
 
 
-                        IconButton(
-                          icon: const Icon(Icons.delete,color: Colors.white,size: 30),
-                          onPressed: () {
-                            // Show a confirmation dialog before deleting the task
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title:  Align(alignment: Alignment.center, child: Text('تأكيد الحذف' , style: AppTextStyles.bodyText,)),
-                                  content: const Text('هل انت متأكد من حذف هذه المهمة؟'),
-                                  actions: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context); // Close the dialog
-                                          },
-                                          child: const Text('الغاء'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            // Perform the delete operation
-                                            taskProvider.deleteTask(task.id!);
-                                            Navigator.pop(context); // Close the dialog
-                                            Navigator.pop(context); // Close the details page
-                                          },
-                                          child: const Text('حذف'),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    )
+                          IconButton(
+                            icon: const Icon(Icons.delete,color: Colors.white,size: 30),
+                            onPressed: () {
+                              // Show a confirmation dialog before deleting the task
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:  Align(alignment: Alignment.center, child: Text('تأكيد الحذف' , style: AppTextStyles.bodyText,)),
+                                    content: const Text('هل انت متأكد من حذف هذه المهمة؟'),
+                                    actions: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context); // Close the dialog
+                                            },
+                                            child: const Text('الغاء'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              // Perform the delete operation
+                                              taskProvider.deleteTask(task.id!);
+                                              Navigator.pop(context); // Close the dialog
+                                              Navigator.pop(context); // Close the details page
+                                            },
+                                            child: const Text('حذف'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      )
+                    ),
                   ),
+                   Positioned(
+                     top: 10,
+                     right: 0,
+                     left: 0,
+                     child: Container(
+                       width: 30,
+                       height: 30,
+                       decoration: BoxDecoration(
+                         shape: BoxShape.circle,
+                         color: Colors.white,
+                         boxShadow: [
+                           BoxShadow(
+                             color: Colors.grey.withOpacity(0.5),
+                             spreadRadius: 2,
+                             blurRadius: 5,
+                             offset: const Offset(0, 3),
+                           ),
+                         ],
+                       ),
+                       child: const Center(
+                         child: Icon(
+                           Icons.keyboard_double_arrow_up_outlined,
+                           color:AppColors.purple,
+                         ),
+                       ),
+                     ),
+                   )
+
+                 ]
                 ),
               ),
             ),

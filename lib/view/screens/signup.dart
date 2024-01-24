@@ -5,7 +5,6 @@ import '../../theme/app_text_styles.dart';
 import '../components/AppElevatedButton.dart';
 import '../components/AppTextField.dart';
 import '../components/NvigationBarContent.dart';
-import 'home.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
