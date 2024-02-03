@@ -11,12 +11,10 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get isAuthenticated => _currentUser != null;
   final DatabaseHelper dbHelper = DatabaseHelper();
 
-  // Key for storing user authentication state in SharedPreferences
   static const String _isAuthenticatedKey = 'is_authenticated';
 
   Future<bool> signUp(
       String username, String password, String phoneNumber) async {
-    // Ensure the database is initialized
     await dbHelper.initDatabase();
 
     final existingUser = await dbHelper.getUserByUsername(username);
@@ -26,17 +24,13 @@ class AuthenticationProvider extends ChangeNotifier {
     }
 
     final newUser =
-    User(username: username, password: password, phoneNumber: phoneNumber);
+        User(username: username, password: password, phoneNumber: phoneNumber);
     final userId = await dbHelper.insertUser(newUser);
 
-    if (userId != null) {
-      _currentUser = newUser.copyWith(id: userId);
-      _saveAuthenticationState(true);
-      notifyListeners();
-      return true;
-    } else {
-      return false;
-    }
+    _currentUser = newUser.copyWith(id: userId);
+    _saveAuthenticationState(true);
+    notifyListeners();
+    return true;
   }
 
   Future<bool> logIn(String username, String password) async {
@@ -56,12 +50,10 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<bool> checkAuthentication() async {
-    // Check if the user is authenticated
     final prefs = await SharedPreferences.getInstance();
     final isAuthenticated = prefs.getBool(_isAuthenticatedKey) ?? false;
 
     if (isAuthenticated) {
-      // If authenticated, load user information
       await _loadUserInformation();
     }
 
@@ -74,16 +66,10 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///  method to save authentication state in SharedPreferences
   Future<void> _saveAuthenticationState(bool isAuthenticated) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool(_isAuthenticatedKey, isAuthenticated);
   }
 
-  /// Helper method to load user information from SharedPreferences
-  Future<void> _loadUserInformation() async {
-    final prefs = await SharedPreferences.getInstance();
-    // Load user information based on your application's structure
-    // For example: _currentUser = User.fromMap(prefs.getString('user_info'));
-  }
+  Future<void> _loadUserInformation() async {}
 }

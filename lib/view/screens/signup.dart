@@ -8,8 +8,7 @@ import '../components/AppTextField.dart';
 class SignUpPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneNumberController =
-      TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
@@ -65,7 +64,8 @@ class SignUpPage extends StatelessWidget {
                   if (password != confirmPassword) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('كلمة المرور وتأكيد كلمة المرور غير متطابقين.'),
+                        content: Text(
+                            'كلمة المرور وتأكيد كلمة المرور غير متطابقين.'),
                       ),
                     );
                     return;
@@ -76,22 +76,20 @@ class SignUpPage extends StatelessWidget {
                     listen: false,
                   ).signUp(username, password, phoneNumber);
 
-                  if (success ) {
-                    final user = Provider.of<AuthenticationProvider>(
-                      context,
-                      listen: false,
-                    ).currentUser;
-                    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
-
+                  if (success) {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/home', (route) => false);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                       SnackBar(
-                        content: Text('اسم المستخدم موجود بالفعل' , style:AppTextStyles.headline1  ,),
+                      SnackBar(
+                        content: Text(
+                          'اسم المستخدم موجود بالفعل',
+                          style: AppTextStyles.headline1,
+                        ),
                       ),
                     );
                   }
                 },
-
                 label: 'إنشاء حساب',
               ),
             ],

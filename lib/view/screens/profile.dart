@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/theme/app_text_styles.dart';
-import 'package:task_manager/view/components/CustomAppBar.dart';
 import '../../core/models/task.dart';
 import '../../core/providers/TaskProvider.dart';
 import '../../core/providers/authentication_provider.dart';
@@ -9,7 +8,9 @@ import '../widgets/TaskChart.dart';
 import '../widgets/customCard.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key,});
+  const ProfilePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,24 +24,31 @@ class ProfilePage extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Align(alignment: Alignment.center, child: Text('تأكيد الخروج',style: AppTextStyles.done,)),
-            content: Text('هل انت متأكد من تسجيل الخروج',style: AppTextStyles.bodyText,),
+            title: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'تأكيد الخروج',
+                  style: AppTextStyles.done,
+                )),
+            content: Text(
+              'هل انت متأكد من تسجيل الخروج',
+              style: AppTextStyles.bodyText,
+            ),
             actions: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Dismiss the dialog
+                      Navigator.of(context).pop();
                     },
                     child: const Text('الغاء'),
                   ),
                   TextButton(
                     onPressed: () {
-                      // Handle logout here
                       AuthenticationProvider().logOut();
-                      // Navigate to the login page or any other appropriate screen
-                      Navigator.of(context).pushNamedAndRemoveUntil('/login' , (route) => false);
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/login', (route) => false);
                     },
                     child: const Text('تأكيد'),
                   ),
@@ -62,7 +70,7 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.exit_to_app), // Use any icon you prefer
+            icon: Icon(Icons.exit_to_app),
             onPressed: confirmLogout,
           ),
         ],
@@ -75,10 +83,10 @@ class ProfilePage extends StatelessWidget {
               children: [
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.24,
-                  child: const TasksChart(), // Add the TasksChart widget
+                  child: const TasksChart(),
                 ),
                 Text('المهام المنجزة', style: AppTextStyles.bodyText),
-                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.56,
                   child: ListView.builder(
@@ -91,9 +99,7 @@ class ProfilePage extends StatelessWidget {
                         date: task.dueDate,
                         startTime: task.startTime,
                         endTime: task.endTime,
-                        onPressed: () {
-                          // Handle onTap for completed task card
-                        },
+                        onPressed: () {},
                         index: index,
                         deleteIcone: () {
                           taskProvider.deleteCompletedTask(task.id ?? 0);
@@ -103,7 +109,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2 ,
+                  height: MediaQuery.of(context).size.height * 0.2,
                 )
               ],
             ),

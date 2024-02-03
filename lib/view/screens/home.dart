@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                   child: CustomTaskCard(
                     taskName: task.title,
                     date: task.dueDate,
-                    startTime: task.startTime,
+                     startTime: task.startTime,
                     endTime: task.endTime,
                     onPressed: () {
                       Navigator.push(

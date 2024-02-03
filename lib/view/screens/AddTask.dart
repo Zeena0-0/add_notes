@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/view/components/CustomAppBar.dart';
 import 'package:task_manager/view/components/NvigationBarContent.dart';
-import 'package:task_manager/view/screens/home.dart';
 import '../../core/models/task.dart';
 import '../../core/providers/TaskProvider.dart';
 import '../components/AnimatedTextField.dart';

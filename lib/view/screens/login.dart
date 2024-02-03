@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_manager/view/components/NvigationBarContent.dart';
 import 'package:task_manager/view/screens/signup.dart';
 import '../../core/providers/authentication_provider.dart';
 import '../components/AppElevatedButton.dart';
@@ -50,7 +49,8 @@ class LoginPage extends StatelessWidget {
                       .logIn(username, password);
 
                   if (success) {
-                    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/home', (route) => false);
                   } else {
                     // Handle login failure
                     ScaffoldMessenger.of(context).showSnackBar(
