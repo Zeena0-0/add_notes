@@ -3,12 +3,12 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../theme/app_colors.dart';
 
-
 class GoogleNavBar extends StatelessWidget {
   final int selectedIndex; // The currently selected tab index
   final ValueChanged<int> onTabChange; // Callback when a tab is selected
 
-  const GoogleNavBar({super.key,
+  const GoogleNavBar({
+    super.key,
     required this.selectedIndex,
     required this.onTabChange,
   });
@@ -28,22 +28,19 @@ class GoogleNavBar extends StatelessWidget {
           BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 15),
         ],
         gap: 7,
-        color:AppColors.purple,
+        color: AppColors.purple,
         activeColor: Colors.white,
         iconSize: 20,
         tabBackgroundColor: AppColors.purple,
-
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-
         tabs: const [
-          // Define your navigation tabs with icons and text
           GButton(
             icon: Icons.home,
             text: 'Home',
           ),
           GButton(
             icon: Icons.add,
-            text: 'Add Task',
+            text: 'Add Note',
           ),
           GButton(
             icon: Icons.person_2_rounded,
@@ -54,5 +51,3 @@ class GoogleNavBar extends StatelessWidget {
     );
   }
 }
-
-

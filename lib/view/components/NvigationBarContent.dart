@@ -1,15 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:task_manager/view/screens/home.dart';
-
 import '../screens/AddTask.dart';
 import '../screens/profile.dart';
 import 'google_nav_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -19,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _pageController.dispose(); // Dispose of the PageController
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -42,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
           HomePage(),
           AddTaskPage(),
           ProfilePage(),
-          // Add more pages as needed
         ],
       ),
       bottomNavigationBar: GoogleNavBar(
@@ -51,5 +49,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }

@@ -21,7 +21,7 @@ class CustomDateTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
-        height: 50, // Adjust the height as needed
+        height: 50,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.purple, width: 1.0),
           borderRadius: BorderRadius.circular(15),

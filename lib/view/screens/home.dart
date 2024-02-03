@@ -6,9 +6,10 @@ import '../widgets/customCard.dart';
 import 'TaskDetailsPage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -29,16 +30,20 @@ class _HomePageState extends State<HomePage> {
       body: Consumer<TaskProvider>(
         builder: (context, taskProvider, child) {
           if (taskProvider.tasks.isEmpty) {
-            // Placeholder when the task list is empty
             return Center(
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/task.png', width: MediaQuery.of(context).size.width * 0.7, // Adjust the width as needed
-                      fit: BoxFit.contain,), // Replace with your image path
-                     SizedBox(height:  MediaQuery.of(context).size.width * 0.2),
-                    Text('ابدأ باضافة مهام جديدة ', style: TextStyle(fontSize: 16)),
+                    Image.asset(
+                      'assets/task.png',
+                      width: MediaQuery.of(context).size.width *
+                          0.7, // Adjust the width as needed
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.width * 0.2),
+                    const Text('ابدأ باضافة مهام جديدة ',
+                        style: TextStyle(fontSize: 16)),
                   ],
                 ),
               ),
@@ -49,11 +54,12 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final task = taskProvider.tasks[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   child: CustomTaskCard(
                     taskName: task.title,
                     date: task.dueDate,
-                     startTime: task.startTime,
+                    startTime: task.startTime,
                     endTime: task.endTime,
                     onPressed: () {
                       Navigator.push(
